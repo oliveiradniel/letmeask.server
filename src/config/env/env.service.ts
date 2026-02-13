@@ -26,4 +26,8 @@ export class EnvService {
   get postgresDB(): string {
     return this.configService.getOrThrow<string>('POSTGRES_DB');
   }
+
+  get databaseURL(): string {
+    return this.configService.getOrThrow<string>('DATABASE_URL');
+  }
 }

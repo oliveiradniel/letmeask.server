@@ -12,7 +12,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - ./docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      # Use the prisma migrations to provide extensions
+      # - ./docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
       - pg-data:/var/lib/postgresql/18/data
 
 volumes:

@@ -6,6 +6,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Matches,
 } from 'class-validator';
 
 import { NodeEnv } from './types/node-env';
@@ -31,4 +32,9 @@ export class EnvironmentVariablesDTO {
   @IsString()
   @IsNotEmpty()
   POSTGRES_DB!: string;
+
+  @IsString()
+  @Matches(/^postgres(ql)?:\/\//)
+  @IsNotEmpty()
+  DATABASE_URL!: string;
 }
