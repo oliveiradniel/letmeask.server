@@ -1,9 +1,18 @@
 generator client {
-  provider     = "prisma-client"
-  output       = "../generated/prisma"
+  provider     = "prisma-client-js"
+  // output       = "../generated/prisma"
   moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model Room {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("rooms")
 }
