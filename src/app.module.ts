@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { EnvironmentVariablesDTO } from './config/env/env.dto';
-import { envValidate } from './config/env/env.validate';
 import { EnvModule } from './config/env/env.module';
+import { DatabaseModule } from './infra/database/database.module';
+
+import { EnvironmentVariablesDTO } from './config/env/env.dto';
+
+import { envValidate } from './config/env/env.validate';
 
 @Module({
   imports: [
@@ -13,6 +16,7 @@ import { EnvModule } from './config/env/env.module';
       validate: (config) => envValidate(config, EnvironmentVariablesDTO),
     }),
     EnvModule,
+    DatabaseModule,
   ],
   controllers: [],
   providers: [],
