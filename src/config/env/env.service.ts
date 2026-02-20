@@ -30,4 +30,8 @@ export class EnvService {
   get databaseURL(): string {
     return this.configService.getOrThrow<string>('DATABASE_URL');
   }
+
+  get frontEndOrigin(): string {
+    return this.configService.getOrThrow<string>('FRONT_END_ORIGIN');
+  }
 }
