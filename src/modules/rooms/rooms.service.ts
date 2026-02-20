@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { RoomsRepository } from 'src/infra/database/repositories/rooms.repository';
+import { RoomsRepository } from './rooms.repository';
 
 import type { CreateRoomData } from './types/create-room-data.type';
 import type { Room } from 'src/entities/Room';

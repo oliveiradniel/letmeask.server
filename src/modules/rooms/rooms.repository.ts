@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 
 import { Prisma, Room } from '@prisma/client';
 
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from 'src/infra/database/prisma.service';
 
-import { IRoomsRepository } from '../contracts/rooms-repository.contract';
+import { IRoomsRepository } from './contracts/rooms-repository.contract';
 
 @Injectable()
 export class RoomsRepository implements IRoomsRepository {
