@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 
 import { RoomsRepository } from './rooms.repository';
 
@@ -13,7 +13,17 @@ export class RoomsService {
     return this.roomsRepository.getAll();
   }
 
-  create(data: CreateRoomData) {
+  async ensureNameIsUnique(name: string): Promise<void> {
+    const foundRoom = await this.roomsRepository.getByName(name);
+
+    if (foundRoom) {
+      throw new ConflictException('This name already in use.');
+    }
+  }
+
+  async create(data: CreateRoomData) {
+    await this.ensureNameIsUnique(data.name);
+
     return this.roomsRepository.create(data);
   }
 }

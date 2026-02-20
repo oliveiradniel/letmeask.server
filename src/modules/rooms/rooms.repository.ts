@@ -18,6 +18,14 @@ export class RoomsRepository implements IRoomsRepository {
     });
   }
 
+  getByName(name: string): Promise<Room | null> {
+    return this.prismaService.room.findFirst({
+      where: {
+        name,
+      },
+    });
+  }
+
   create(data: Prisma.RoomCreateInput): Promise<Room> {
     return this.prismaService.room.create({
       data,
