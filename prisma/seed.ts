@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 
@@ -11,7 +13,6 @@ if (!connectionString) {
   throw new Error('DATABASE_URL is not defined!');
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const pool = new Pool({ connectionString });
 
 const prisma = new PrismaClient({
@@ -19,25 +20,53 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
+  await prisma.question.deleteMany();
   await prisma.room.deleteMany();
 
-  function makeRoom() {
-    return {
-      name: faker.company.name(),
-      description: faker.lorem.sentence(),
-    };
+  function makeQuestions({
+    quantity,
+    roomId,
+  }: {
+    quantity: number;
+    roomId: string;
+  }) {
+    return Array.from({ length: quantity }).map(() => ({
+      roomId,
+      question: faker.lorem.sentence(),
+      answer: faker.lorem.sentence(),
+    }));
   }
 
-  const TOTAL_ROOMS = 20;
+  function makeRooms({
+    quantityRooms,
+  }: {
+    quantityRooms: number;
+    quantityQuestions?: number;
+  }) {
+    return Array.from({ length: quantityRooms }).map(() => ({
+      name: faker.company.name(),
+      description: faker.lorem.sentence(),
+    }));
+  }
 
-  const rooms = Array.from({ length: TOTAL_ROOMS }).map(() => makeRoom());
+  const TOTAL_ROOMS = 10;
+  const TOTAL_QUESTIONS = 5;
 
-  await prisma.room.createMany({ data: rooms });
+  const rooms = await prisma.room.createManyAndReturn({
+    data: makeRooms({ quantityRooms: TOTAL_ROOMS }),
+  });
+
+  await prisma.question.createMany({
+    data: rooms.flatMap((room) =>
+      makeQuestions({ quantity: TOTAL_QUESTIONS, roomId: room.id }),
+    ),
+  });
 }
 
 main()
   .then(() => console.log('Successfully executed seed'))
-  .catch(() => {
+  .catch((error) => {
+    console.log(error);
     console.log('Error while executing seed');
   })
   .finally(async () => {
