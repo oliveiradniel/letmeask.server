@@ -9,10 +9,22 @@ datasource db {
 }
 
 model Room {
-  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name        String   @unique
+  id          String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name        String     @unique
   description String?
-  createdAt   DateTime @default(now()) @map("created_at")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  questions   Question[]
 
   @@map("rooms")
+}
+
+model Question {
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    String   @map("room_id") @db.Uuid
+  question  String
+  answer    String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("questions")
 }
