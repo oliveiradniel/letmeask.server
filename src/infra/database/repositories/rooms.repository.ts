@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { Room } from '@prisma/client';
+import { Prisma, Room } from '@prisma/client';
 
 import { PrismaService } from '../prisma.service';
 
@@ -15,6 +15,12 @@ export class RoomsRepository implements IRoomsRepository {
       orderBy: {
         createdAt: 'desc',
       },
+    });
+  }
+
+  create(data: Prisma.RoomCreateInput): Promise<Room> {
+    return this.prismaService.room.create({
+      data,
     });
   }
 }
