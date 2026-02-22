@@ -34,6 +34,7 @@
       "always",
       [
         "rooms",
+        "questions",
         "database",
         "infra",
         "env",
