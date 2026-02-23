@@ -10,10 +10,10 @@ import { IQuestionsRepository } from './contracts/questions-repository.contract'
 export class QuestionsRepository implements IQuestionsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  getQuestionsByRoomId(id: string): Promise<Question[]> {
+  getQuestionsByRoomId(roomId: string): Promise<Question[]> {
     return this.prismaService.question.findMany({
       where: {
-        id,
+        roomId,
       },
       orderBy: {
         createdAt: 'desc',
