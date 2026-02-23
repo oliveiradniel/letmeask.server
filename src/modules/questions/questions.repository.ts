@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { Question } from '@prisma/client';
+import { Prisma, Question } from '@prisma/client';
 
 import { PrismaService } from 'src/infra/database/prisma.service';
 
@@ -18,6 +18,12 @@ export class QuestionsRepository implements IQuestionsRepository {
       orderBy: {
         createdAt: 'desc',
       },
+    });
+  }
+
+  create(data: Prisma.QuestionCreateManyInput): Promise<Question> {
+    return this.prismaService.question.create({
+      data,
     });
   }
 }
