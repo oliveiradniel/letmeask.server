@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 
 import { RoomsService } from './rooms.service';
 
@@ -24,11 +32,13 @@ export class RoomsController {
   }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() data: CreateRoomDTO): Promise<Room> {
     return this.roomsService.create(data);
   }
 
   @Post(':roomId/questions')
+  @HttpCode(HttpStatus.CREATED)
   createQuestion(
     @Param() { roomId }: RoomIdParam,
     @Body() data: CreateQuestionDTO,
