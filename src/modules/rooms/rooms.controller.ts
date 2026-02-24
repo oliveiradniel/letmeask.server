@@ -43,6 +43,6 @@ export class RoomsController {
     @Param() { roomId }: RoomIdParam,
     @Body() data: CreateQuestionDTO,
   ): Promise<Question> {
-    return this.roomsService.createQuestion({ roomId, ...data });
+    return this.roomsService.createQuestion({ roomId, data });
   }
 }

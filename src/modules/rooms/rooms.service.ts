@@ -12,6 +12,11 @@ import type { Question } from 'src/entities/Question';
 import type { CreateRoomData } from './types/create-room-data.type';
 import type { CreateQuestionData } from '../questions/types/create-question-data.type';
 
+type CreateQuestion = {
+  roomId: string;
+  data: CreateQuestionData;
+};
+
 @Injectable()
 export class RoomsService {
   constructor(
@@ -35,10 +40,15 @@ export class RoomsService {
     return this.roomsRepository.create(data);
   }
 
-  async createQuestion(data: CreateQuestionData): Promise<Question> {
-    await this.throwErrorIfRoomNotFound(data.roomId);
+  async createQuestion({ roomId, data }: CreateQuestion): Promise<Question> {
+    await this.throwErrorIfRoomNotFound(roomId);
 
-    return this.questionsRepository.create(data);
+    return this.questionsRepository.create({
+      ...data,
+      room: {
+        connect: { id: roomId },
+      },
+    });
   }
 
   async ensureNameIsUnique(name: string): Promise<void> {

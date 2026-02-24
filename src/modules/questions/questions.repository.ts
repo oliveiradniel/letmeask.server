@@ -21,7 +21,7 @@ export class QuestionsRepository implements IQuestionsRepository {
     });
   }
 
-  create(data: Prisma.QuestionCreateManyInput): Promise<Question> {
+  create(data: Prisma.QuestionCreateInput): Promise<Question> {
     return this.prismaService.question.create({
       data,
     });
