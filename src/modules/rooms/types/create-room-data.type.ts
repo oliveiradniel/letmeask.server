@@ -1,4 +1,4 @@
-export interface CreateRoomData {
+export type CreateRoomData = {
   name: string;
   description?: string | null;
-}
+};

@@ -1,3 +1,3 @@
-export interface CreateQuestionData {
+export type CreateQuestionData = {
   question: string;
-}
+};
