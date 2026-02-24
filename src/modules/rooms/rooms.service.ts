@@ -11,6 +11,7 @@ import type { Room } from 'src/entities/Room';
 import type { Question } from 'src/entities/Question';
 import type { CreateRoomData } from './types/create-room-data.type';
 import type { CreateQuestionData } from '../questions/types/create-question-data.type';
+import type { RoomWithQuestionCount } from './types/room-with-question-count.type';
 
 type CreateQuestion = {
   roomId: string;
@@ -24,7 +25,7 @@ export class RoomsService {
     private readonly questionsRepository: QuestionsRepository,
   ) {}
 
-  findAll(): Promise<Room[]> {
+  findAll(): Promise<RoomWithQuestionCount[]> {
     return this.roomsRepository.getAll();
   }
 

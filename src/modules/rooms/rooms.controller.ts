@@ -14,15 +14,16 @@ import { RoomIdParam } from './params/room-id.param';
 import { CreateRoomDTO } from './dtos/create-room.dto';
 import { CreateQuestionDTO } from '../questions/dtos/create-question.dto';
 
-import type { Question } from 'src/entities/Question';
 import type { Room } from 'src/entities/Room';
+import type { Question } from 'src/entities/Question';
+import type { RoomWithQuestionCount } from './types/room-with-question-count.type';
 
 @Controller('rooms')
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Get()
-  list(): Promise<Room[]> {
+  list(): Promise<RoomWithQuestionCount[]> {
     return this.roomsService.findAll();
   }
 
