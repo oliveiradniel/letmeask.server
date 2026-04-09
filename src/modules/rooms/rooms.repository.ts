@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
-import { Prisma, Room } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 import { PrismaService } from 'src/infra/database/prisma.service';
 
-import { IRoomsRepository } from './contracts/rooms-repository.contract';
-import { RoomWithQuestionCount } from './types/room-with-question-count.type';
 import { RoomMapper } from './mappers/room.mapper';
+
+import { IRoomsRepository } from './contracts/rooms-repository.contract';
+import type { RoomWithQuestionCount } from './types/room-with-question-count.type';
+import type { Room } from 'src/entities/Room';
 
 @Injectable()
 export class RoomsRepository implements IRoomsRepository {
@@ -47,9 +49,12 @@ export class RoomsRepository implements IRoomsRepository {
     });
   }
 
-  create(data: Prisma.RoomCreateInput): Promise<Room> {
+  create({ name, description }: Prisma.RoomCreateInput): Promise<Room> {
     return this.prismaService.room.create({
-      data,
+      data: {
+        name,
+        description,
+      },
     });
   }
 }

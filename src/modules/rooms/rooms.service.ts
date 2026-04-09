@@ -4,25 +4,25 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import { GeminiService } from '../gemini/gemini.service';
+import { AudioService } from '../audio/audio.service';
+
 import { RoomsRepository } from './rooms.repository';
 import { QuestionsRepository } from '../questions/questions.repository';
 
 import type { Room } from 'src/entities/Room';
 import type { Question } from 'src/entities/Question';
 import type { CreateRoomData } from './types/create-room-data.type';
-import type { CreateQuestionData } from '../questions/types/create-question-data.type';
 import type { RoomWithQuestionCount } from './types/room-with-question-count.type';
-
-type CreateQuestion = {
-  roomId: string;
-  data: CreateQuestionData;
-};
+import { CreateAnswerData } from './types/create-answer-data.type';
 
 @Injectable()
 export class RoomsService {
   constructor(
     private readonly roomsRepository: RoomsRepository,
     private readonly questionsRepository: QuestionsRepository,
+    private readonly geminiService: GeminiService,
+    private readonly audioService: AudioService,
   ) {}
 
   findAll(): Promise<RoomWithQuestionCount[]> {
@@ -41,15 +41,45 @@ export class RoomsService {
     return this.roomsRepository.create(data);
   }
 
-  async createQuestion({ roomId, data }: CreateQuestion): Promise<Question> {
+  async createQuestion(roomId: string, question: string): Promise<Question> {
     await this.throwErrorIfRoomNotFound(roomId);
 
+    const answer = await this.createAnswer({ roomId, question });
+
     return this.questionsRepository.create({
-      ...data,
-      room: {
-        connect: { id: roomId },
-      },
+      roomId,
+      question,
+      answer,
     });
+  }
+
+  private async createAnswer({
+    roomId,
+    question,
+  }: CreateAnswerData): Promise<string | null> {
+    const embedding =
+      await this.geminiService.generateEmbeddingsFromText(question);
+
+    const chunks = await this.audioService.findTopBySemanticSimilarity(
+      roomId,
+      embedding,
+    );
+
+    let answer: string | null = null;
+
+    const MIN_SIMILARITY = 0.45;
+
+    const validChunks = chunks.filter(
+      (chunk) => chunk.similarity >= MIN_SIMILARITY,
+    );
+
+    if (validChunks.length <= 0) return null;
+
+    const transcriptions = validChunks.map((chunk) => chunk.transcription);
+
+    answer = await this.geminiService.generateAnswer(question, transcriptions);
+
+    return answer;
   }
 
   async ensureNameIsUnique(name: string): Promise<void> {

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { Prisma, Question } from '@prisma/client';
-
 import { PrismaService } from 'src/infra/database/prisma.service';
 
 import { IQuestionsRepository } from './contracts/questions-repository.contract';
+import type { Question } from 'src/entities/Question';
+import type { CreateQuestionData } from './types/create-question-data.type';
 
 @Injectable()
 export class QuestionsRepository implements IQuestionsRepository {
@@ -21,9 +21,19 @@ export class QuestionsRepository implements IQuestionsRepository {
     });
   }
 
-  create(data: Prisma.QuestionCreateInput): Promise<Question> {
+  async create({
+    roomId,
+    question,
+    answer,
+  }: CreateQuestionData): Promise<Question> {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     return this.prismaService.question.create({
-      data,
+      data: {
+        roomId,
+        question,
+        answer,
+      },
     });
   }
 }

@@ -40,10 +40,10 @@ export class RoomsController {
 
   @Post(':roomId/questions')
   @HttpCode(HttpStatus.CREATED)
-  createQuestion(
+  async createQuestion(
     @Param() { roomId }: RoomIdParam,
     @Body() data: CreateQuestionDTO,
   ): Promise<Question> {
-    return this.roomsService.createQuestion({ roomId, data });
+    return this.roomsService.createQuestion(roomId, data.question);
   }
 }
