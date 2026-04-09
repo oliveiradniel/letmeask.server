@@ -35,6 +35,7 @@
       [
         "rooms",
         "questions",
+        "audio",
         "database",
         "infra",
         "env",
