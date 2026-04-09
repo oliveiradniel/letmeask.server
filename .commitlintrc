@@ -36,6 +36,7 @@
         "rooms",
         "questions",
         "audio",
+        "gemini",
         "database",
         "infra",
         "env",
