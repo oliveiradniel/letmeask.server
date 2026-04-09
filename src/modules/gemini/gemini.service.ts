@@ -136,7 +136,6 @@ export class GeminiService {
     try {
       return await fn();
     } catch (error: any) {
-      console.log(error);
       if (this.isHttpError(error) && error.status === 429) {
         throw new ServiceUnavailableException(
           'Embedding service is temporarily unavailable. Please try again later.',
