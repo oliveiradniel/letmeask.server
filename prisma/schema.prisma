@@ -1,11 +1,13 @@
 generator client {
-  provider     = "prisma-client-js"
+  provider        = "prisma-client-js"
   // output       = "../generated/prisma"
-  moduleFormat = "cjs"
+  moduleFormat    = "cjs"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider   = "postgresql"
+  extensions = [vector]
 }
 
 model Room {
@@ -27,4 +29,14 @@ model Question {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("questions")
+}
+
+model AudioChunk {
+  id            String                      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  roomId        String                      @map("room_id") @db.Uuid
+  transcription String
+  embedding     Unsupported("vector(768)")?
+  createdAt     DateTime                    @default(now()) @map("created_at")
+
+  @@map("audio_chunks")
 }
