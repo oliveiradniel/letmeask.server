@@ -34,4 +34,8 @@ export class EnvService {
   get frontEndOrigin(): string {
     return this.configService.getOrThrow<string>('FRONT_END_ORIGIN');
   }
+
+  get geminiAPIKey(): string {
+    return this.configService.getOrThrow<string>('GEMINI_API_KEY');
+  }
 }

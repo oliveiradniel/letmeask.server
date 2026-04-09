@@ -41,4 +41,8 @@ export class EnvironmentVariablesDTO {
   @IsString()
   @IsNotEmpty()
   FRONT_END_ORIGIN!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  GEMINI_API_KEY!: string;
 }
