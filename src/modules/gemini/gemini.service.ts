@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   ServiceUnavailableException,
@@ -125,7 +127,7 @@ export class GeminiService {
 
     if (!response.text) {
       throw new BadRequestException(
-        'Failed to generate a response from Gemini',
+        'Failed to generate a response from Gemini.',
       );
     }
 
@@ -137,8 +139,9 @@ export class GeminiService {
       return await fn();
     } catch (error: any) {
       if (this.isHttpError(error) && error.status === 429) {
-        throw new ServiceUnavailableException(
-          'Embedding service is temporarily unavailable. Please try again later.',
+        throw new HttpException(
+          'Too many requests. Please try later.',
+          HttpStatus.TOO_MANY_REQUESTS,
         );
       }
 

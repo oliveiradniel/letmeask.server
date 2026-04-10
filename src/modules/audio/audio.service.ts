@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { GeminiService } from '../gemini/gemini.service';
+import { RoomsService } from '../rooms/rooms.service';
 
 import { AudioRepository } from './audio.repository';
 
@@ -11,6 +12,7 @@ export class AudioService {
   constructor(
     private readonly audioRepository: AudioRepository,
     private readonly geminiService: GeminiService,
+    private readonly roomsService: RoomsService,
   ) {}
 
   async findTopBySemanticSimilarity(roomId: string, embedding: number[]) {
@@ -21,6 +23,8 @@ export class AudioService {
     roomId: string,
     audio: Express.Multer.File,
   ): Promise<AudioChunkWithoutEmbedding> {
+    await this.roomsService.throwErrorIfRoomNotFound(roomId);
+
     const transcription = await this.transcribe(audio);
 
     const embeddings = await this.generateEmbeddings(transcription);
