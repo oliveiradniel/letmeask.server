@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   database:
     container_name: agents-db
@@ -14,7 +12,7 @@ services:
     volumes:
       # Use the prisma migrations to provide extensions
       # - ./docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
-      - pg-data:/var/lib/postgresql/18/data
+      - pg-data:/var/lib/postgresql
 
 volumes:
   pg-data:
