@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -18,7 +19,12 @@ import type { Question } from 'src/entities/Question';
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
-  @Post('/rooms/:roomId')
+  @Get('rooms/:roomId')
+  listByRoomId(@Param() { roomId }: RoomIdParam): Promise<Question[]> {
+    return this.questionsService.findByRoomId(roomId);
+  }
+
+  @Post('rooms/:roomId')
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Param() { roomId }: RoomIdParam,

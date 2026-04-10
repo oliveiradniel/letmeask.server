@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/infra/database/prisma.service';
 
 import { IQuestionsRepository } from './contracts/questions-repository.contract';
+
 import type { Question } from 'src/entities/Question';
 import type { CreateQuestionData } from './types/create-question-data.type';
 
@@ -10,7 +11,7 @@ import type { CreateQuestionData } from './types/create-question-data.type';
 export class QuestionsRepository implements IQuestionsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  getQuestionsByRoomId(roomId: string): Promise<Question[]> {
+  getByRoomId(roomId: string): Promise<Question[]> {
     return this.prismaService.question.findMany({
       where: {
         roomId,

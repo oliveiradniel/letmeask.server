@@ -18,6 +18,12 @@ export class QuestionsService {
     private readonly questionsRepository: QuestionsRepository,
   ) {}
 
+  async findByRoomId(roomId: string): Promise<Question[]> {
+    await this.roomsService.throwErrorIfRoomNotFound(roomId);
+
+    return this.questionsRepository.getByRoomId(roomId);
+  }
+
   async create(roomId: string, question: string): Promise<Question> {
     await this.roomsService.throwErrorIfRoomNotFound(roomId);
 

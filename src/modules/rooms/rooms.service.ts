@@ -8,7 +8,6 @@ import { RoomsRepository } from './rooms.repository';
 import { QuestionsRepository } from '../questions/questions.repository';
 
 import type { Room } from 'src/entities/Room';
-import type { Question } from 'src/entities/Question';
 import type { CreateRoomData } from './types/create-room-data.type';
 import type { RoomWithQuestionCount } from './types/room-with-question-count.type';
 
@@ -21,12 +20,6 @@ export class RoomsService {
 
   findAll(): Promise<RoomWithQuestionCount[]> {
     return this.roomsRepository.getAll();
-  }
-
-  async findQuestionsByRoomId(roomId: string): Promise<Question[]> {
-    await this.throwErrorIfRoomNotFound(roomId);
-
-    return this.questionsRepository.getQuestionsByRoomId(roomId);
   }
 
   async create(data: CreateRoomData): Promise<Room> {
