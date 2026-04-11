@@ -27,8 +27,6 @@ export class QuestionsRepository implements IQuestionsRepository {
     question,
     answer,
   }: CreateQuestionData): Promise<Question> {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
     return this.prismaService.question.create({
       data: {
         roomId,

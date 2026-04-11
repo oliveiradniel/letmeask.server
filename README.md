@@ -68,7 +68,7 @@ Os audio chunks armazenam:
 
 ---
 
-## 🚀 Stack principal (produção)
+## 🚀 Stacks principais (Produção)
 
 | Tecnologia        | Papel no Sistema                                |
 | ----------------- | ----------------------------------------------- |
@@ -83,7 +83,7 @@ Os audio chunks armazenam:
 
 ---
 
-## 🧪 Stack de desenvolvimento
+## 🧪 Stacks de Desenvolvimento
 
 | Tecnologia | Uso                                 |
 | ---------- | ----------------------------------- |
@@ -121,7 +121,13 @@ git clone https://github.com/oliveiradniel/letmeask.server
 cd letmeask.server
 ```
 
-2. Configure o ambiente:
+2. Instale as dependências:
+
+```bash
+npm install
+```
+
+3. Configure o ambiente:
 
 ```bash
 # Linux/macOS
@@ -133,16 +139,22 @@ cp .env.example .env
 copy .env.example .env
 ```
 
-3. Suba os serviços:
+4. Suba os serviços:
 
 ```bash
 docker compose up -d
 ```
 
-4. Execute a API
+5. Execute a API:
 
 ```bash
 npm run start:dev
+```
+
+6. Preencha as tabelas (Opcional):
+
+```bash
+npx prisma db seed
 ```
 
 ---
