@@ -117,7 +117,7 @@ O projeto utiliza um arquivo `.env` com as seguintes variáveis:
 1. Clone o repositório e acesse o diretório do projeto:
 
 ```bash
-git clone https://github.com/oliveiradniel/letmeask.server
+git clone https://github.com/oliveiradniel/letmeask.server.git
 cd letmeask.server
 ```
 
